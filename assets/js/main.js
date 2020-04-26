@@ -39,22 +39,6 @@
 					skel.breakpoint('medium').active
 				);
 			});
-
-		// Items.
-			$('.item').each(function() {
-
-				var $this = $(this),
-					$header = $this.find('header'),
-					$img = $header.find('img');
-
-				// Set background.
-					$header.css('background-image', 'url(' + $img.attr('src') + ')');
-
-				// Remove original image.
-					$img.remove();
-
-            });
-
 	});
 
 })(jQuery);
