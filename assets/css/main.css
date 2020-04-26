@@ -715,11 +715,11 @@
 
 			.icon.major:before {
 				cursor: default;
-				font-size: 2.5rem;
+				font-size: 2rem;
 				box-shadow: inset 0 0 0 2px #666666;
-				width: 2.5em;
-				height: 2.5em;
-				line-height: 2.5em;
+				width: 2em;
+				height: 2em;
+				line-height: 2em;
 				display: inline-block;
 				border-radius: 100%;
 				color: #666666;
@@ -1073,18 +1073,21 @@
 			background-color: #444;
 			color: rgba(255, 255, 255, 0.75);
 			position: relative;
-			overflow: hidden;
+            overflow: hidden;
+            background-position: center;
+            background-size: cover;
+            background-repeat: no-repeat;
 		}
 
 			.item header input, .item header select, .item header textarea {
 				color: #ffffff;
 			}
 
-			.item header a {
+			.item header img {
 				color: inherit;
 			}
 
-				.item header a:hover {
+				.item header img:hover {
 					color: #EF6480 !important;
 				}
 
@@ -1093,7 +1096,9 @@
 			}
 
 			.item header h1, .item header h2, .item header h3, .item header h4, .item header h5, .item header h6 {
-				color: #ffffff;
+                color: #ffffff;
+                background: rgba( 50, 50, 50, 0.35 );
+                padding-left: 8px; padding-right: 3px;
 			}
 
 			.item header blockquote {
@@ -1107,46 +1112,6 @@
 
 			.item header hr {
 				border-bottom-color: #ffffff;
-			}
-
-			.item header a {
-				-moz-transition: -moz-transform 0.2s ease;
-				-webkit-transition: -webkit-transform 0.2s ease;
-				-ms-transition: -ms-transform 0.2s ease;
-				transition: transform 0.2s ease;
-				background-size: cover;
-				background-position: center;
-				background-repeat: no-repeat;
-				position: absolute;
-				top: 0;
-				left: 0;
-				width: 100%;
-				height: 100%;
-				display: block;
-			}
-
-				.item header a:before {
-					content: '';
-					display: block;
-					position: absolute;
-					top: 0;
-					left: 0;
-					width: 100%;
-					height: 100%;
-					background-color: rgba(0, 0, 0, 0.25);
-					background-image: url("images/overlay.png");
-				}
-
-			.item header:hover a {
-				-moz-transform: scale(1.1);
-				-webkit-transform: scale(1.1);
-				-ms-transform: scale(1.1);
-				transform: scale(1.1);
-			}
-
-			.item header > * {
-				position: relative;
-				z-index: 1;
 			}
 
 			.item header h3 {
@@ -1304,11 +1269,11 @@
 			color: #ffffff;
 		}
 
-		#header a {
+		#header img {
 			color: inherit;
 		}
 
-			#header a:hover {
+			#header img:hover {
 				color: #EF6480 !important;
 			}
 
@@ -1445,7 +1410,7 @@
 
 		#main > header:first-child {
 			text-align: center;
-		}
+        }
 
 		@media screen and (max-width: 736px) {
 
@@ -1487,33 +1452,6 @@
 			}
 
 				#intro p br {
-					display: none;
-				}
-
-		}
-
-/* CTA */
-
-	#cta {
-		padding: 2em 0 0.1em 0;
-		text-align: center;
-	}
-
-		@media screen and (max-width: 736px) {
-
-			#cta {
-				padding: 2em 2em 0.1em 2em;
-			}
-
-		}
-
-		@media screen and (max-width: 480px) {
-
-			#cta {
-				padding: 2em 1em 0.1em 1em;
-			}
-
-				#cta p br {
 					display: none;
 				}
 

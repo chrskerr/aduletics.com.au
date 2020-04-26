@@ -45,11 +45,10 @@
 
 				var $this = $(this),
 					$header = $this.find('header'),
-					$a = $header.find('a'),
 					$img = $header.find('img');
 
 				// Set background.
-					$a.css('background-image', 'url(' + $img.attr('src') + ')');
+					$header.css('background-image', 'url(' + $img.attr('src') + ')');
 
 				// Remove original image.
 					$img.remove();
