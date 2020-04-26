@@ -1491,4 +1491,79 @@
 					margin-bottom: 2em;
 				}
 
-		}
+        }
+
+    /* FAQ */
+        
+    .faq {
+        display: flex; flex-direction: row;
+        justify-content: space-between; padding-left: 1px;
+    }
+        
+        .faq > div {
+            flex-grow: 1;
+        }
+
+        .faq > span {
+            margin-right: 2em;
+        }
+
+        .faq .far {
+            font-size: 135%;
+        }
+
+        @media screen and (max-width: 480px) {
+
+			.faq > span {
+				margin-right: 1em;
+			}
+
+        }
+        
+    /* About Us */
+
+    .about-us {
+        display: flex; flex-direction: row;
+    }
+
+        .about-us img {
+            width: 360px;
+        }
+
+        .kate img {
+            padding-right: 1.5em;
+        }
+
+        .mike img {
+            padding-left: 1.5em;
+        }
+
+        @media screen and (max-width: 480px) {
+
+            .about-us img {
+                padding-bottom: 1em;
+                width: 100%;
+            }
+
+            .about-us p {
+                margin-bottom: 1em;
+            }
+
+            .kate img {
+                padding-right: 0;
+                margin: 0 auto;
+            }
+    
+            .mike img {
+                padding-left: 0;
+                margin: 0 auto;
+            }
+
+            .mike {
+                flex-direction: column;
+            }
+
+            .kate {
+                flex-direction: column-reverse;
+            }
+        }

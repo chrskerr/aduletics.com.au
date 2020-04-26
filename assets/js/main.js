@@ -53,8 +53,21 @@
 				// Remove original image.
 					$img.remove();
 
-			});
+            });
 
 	});
 
 })(jQuery);
+
+const faqToggle = id => {
+    $span = $( `#${ id } span` )
+    $p = $( `#${ id } p` )
+
+    if ( $span.hasClass( "fa-plus-square" ) ) {
+        $span.removeClass( "fa-plus-square" ).addClass( "fa-minus-square" );
+        $p.show( 500 )
+    } else {
+        $span.removeClass( "fa-minus-square" ).addClass( "fa-plus-square" );
+        $p.hide( 200 )
+    }
+}
