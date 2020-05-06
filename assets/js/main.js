@@ -45,13 +45,19 @@
     $( document ).on( "scroll", () => {
         if ( currentTimeout ) clearTimeout( currentTimeout )
         const value = window.scrollY / ( $(document).height() - window.innerHeight )
-        currentTimeout = setTimeout( () => gtag( "event", "scroll", { value }), 250 )
+        currentTimeout = setTimeout( () => {
+            gtag( "event", "scroll", { value })
+            fbq( "trackCustom", "scroll", { value })
+        }, 250 )
     })
 
     let heartbeartInterval = setInterval( () => gtag( "event", "heartbeat" ), 10000 );
     $( document ).on( "visibilitychange", () => {
         clearInterval( heartbeartInterval ) 
-        if ( !document.hidden ) heartbeartInterval = setInterval( () => gtag( "event", "heartbeat" ), 10000 )
+        if ( !document.hidden ) heartbeartInterval = setInterval( () => {
+            gtag( "event", "heartbeat" )
+            fbq( "trackCustom", "hearbeat" )
+        }, 10000 )
     })
 
 })(jQuery);
@@ -64,6 +70,7 @@ const faqToggle = id => {
         $span.removeClass( "fa-plus-square" ).addClass( "fa-minus-square" );
         $p.show( 500 )
         gtag( "event", "faq-open", { value: id })
+        fbq( "trackCustom", "faq-open", { value: id })
     } else {
         $span.removeClass( "fa-minus-square" ).addClass( "fa-plus-square" );
         $p.hide( 200 )
