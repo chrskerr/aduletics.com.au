@@ -48,6 +48,12 @@
         currentTimeout = setTimeout( () => gtag( "event", "scroll", { value }), 250 )
     })
 
+    let heartbeartInterval = setInterval( () => gtag( "event", "heartbeat" ), 10000 );
+    $( document ).on( "visibilitychange", () => {
+        clearInterval( heartbeartInterval ) 
+        if ( !document.hidden ) heartbeartInterval = setInterval( () => gtag( "event", "heartbeat" ), 10000 )
+    })
+
 })(jQuery);
 
 const faqToggle = id => {
