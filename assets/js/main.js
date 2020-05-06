@@ -39,7 +39,14 @@
 					skel.breakpoint('medium').active
 				);
 			});
-	});
+    });
+    
+    let currentTimeout;
+    $( document ).on( "scroll", () => {
+        if ( currentTimeout ) clearTimeout( currentTimeout )
+        const value = window.scrollY / ( $(document).height() - window.innerHeight )
+        currentTimeout = setTimeout( () => gtag( "event", "scroll", { value }), 250 )
+    })
 
 })(jQuery);
 
@@ -50,6 +57,7 @@ const faqToggle = id => {
     if ( $span.hasClass( "fa-plus-square" ) ) {
         $span.removeClass( "fa-plus-square" ).addClass( "fa-minus-square" );
         $p.show( 500 )
+        gtag( "event", "faq-open", { value: id })
     } else {
         $span.removeClass( "fa-minus-square" ).addClass( "fa-plus-square" );
         $p.hide( 200 )
