@@ -402,7 +402,7 @@
 			opacity: 0.25;
 		}
 
-        @media screen and (max-width: 480px) {
+        @media screen and (max-width: 736px) {
 
 			input[type="button"],
 			button,

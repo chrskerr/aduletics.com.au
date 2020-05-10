@@ -86,6 +86,7 @@ const _submitForm = async ( event, cardElement ) => {
 
     gtag( "event", "checkout_progress" );
 
+    const displayError = document.getElementById( 'card-errors' );
     const name = event.target[0].value;
     const email = event.target[1].value;
     const data = await stripe.createPaymentMethod({
@@ -113,7 +114,7 @@ const _submitForm = async ( event, cardElement ) => {
             });
 
             const subscription = await response.json();
-            const { latest_invoice } = subscription;
+            const { latest_invoice, status } = subscription;
             const { payment_intent } = latest_invoice;
 
             if ( payment_intent ) {
@@ -121,23 +122,27 @@ const _submitForm = async ( event, cardElement ) => {
                 if ( status === 'requires_action' ) {
                     const result = await stripe.confirmCardPayment( client_secret );
                     if ( result.error ) {
-                        const displayError = document.getElementById( 'card-errors' );
                         displayError.textContent = `Card declined due to ${ result.error.decline_code.replace( "_", " " ) }. Please try again!`;
                         $( "#button-loader" ).removeClass( "fa-spin fa-spinner" ).addClass( "fa-check" );
                         $( "#submit-button" ).prop( "disabled", false );
-                        return false;
+                        return;
                     }
                 }
+            }
 
+            if ( status === "active" || status === "trialing" ) {
                 gtag( "event", "purchase" );
                 $( "#checkout > .content" ).empty().append(`
                     <h3>Thank you for signing up, and welcome to the club!</h3>
                     <p>An email is on its way to you shortly with more information.</p>
                 `);
+                return
             }
+
+            throw "uncaught outcome"
+
         } catch ( error ) {
             gtag( "event", "server_error", { value: error });
-            const displayError = document.getElementById( 'card-errors' );
             displayError.textContent = `Something went wrong. Please try again!`;
             $( "#button-loader" ).removeClass( "fa-spin fa-spinner" ).addClass( "fa-check" );
             $( "#submit-button" ).prop( "disabled", false );

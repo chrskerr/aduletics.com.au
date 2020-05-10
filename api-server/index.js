@@ -44,7 +44,7 @@ app.post( '/', async ( req, res ) => {
         const subscription = await stripe.subscriptions.create({
             customer: customer.id,
             items: [{ plan: "plan_HFIrXRlfzd2L3T" }],
-            expand: [ "latest_invoice.payment_intent" ]
+            trial_from_plan: true,
         });
 
         return res.status( 200 ).send( subscription )
