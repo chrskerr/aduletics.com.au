@@ -57,9 +57,7 @@
 						<h2>Athletics for Grown-ups</h2>
 						<p>Aduletics is a run club and a runner's school all in one. It's much more than just 'going for a run'. Our focus is about teaching runners how to run, and to equip our runners with the tools they need to train both the brain AND the body.</p>
                         <p>We're all about building stronger AND smarter runners, so there is just as much an emphasis on running technique, skill development, injury prevention and education as there is on the actual programming.</p>
-						<ul class="actions">
-							<li><a href="https://www.unleashyourinnerathlete.com/offers/nAZBd27q/checkout" target="_blank" rel="noreferrer noopener" class="button big">Run with us</a></li>
-						</ul>
+                        <span onclick="openCheckout()" class="button big">Run with us</span>
 					</section>
 
 				<!-- Items -->
@@ -107,9 +105,9 @@
                         </ul>
                         <p>Membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts. Pay as you go and cancel anytime.</p>
                         <p>Contact us at <a href="mailto:info@adultletics.com.au">info@adultletics.com.au</a> to find out more or to start a one week free trial with us today.</p>
-						<ul class="actions" style="text-align: center;">
-							<li><a href="https://www.unleashyourinnerathlete.com/offers/nAZBd27q/checkout" target="_blank" rel="noreferrer noopener" class="button big">Sign Up Now</a></li>
-						</ul>
+                        <div style="text-align: center;">
+                            <span onclick="openCheckout()" class="button big">Run with us</span>
+                        </div>
                     </section>
                     
 					<section id="main" class="main">
@@ -200,7 +198,11 @@
 			<script src="https://code.jquery.com/jquery-3.5.0.min.js"></script>
 			<script src="assets/js/skel.min.js"></script>
 			<script src="assets/js/util.js"></script>
-			<script src="assets/js/main.js"></script>
+            <script src="assets/js/main.js"></script>
+
+            <script src="https://js.stripe.com/v3/"></script>
+            <script src="assets/js/stripe.js"></script>
+            
             <noscript><img height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=707702076706884&ev=PageView&noscript=1" /></noscript>
 	</body>
 </html>
