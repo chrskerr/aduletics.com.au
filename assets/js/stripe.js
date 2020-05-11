@@ -30,7 +30,8 @@ const modalHtml = `
                     <li>Weekly drills to work on running technique and skill development</li>
                     <li>Connection to a like minded group of people for further support, laughs, motivation & inspiration</li>
                 </ul>
-                <p>Membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts. Pay as you go and cancel anytime.</p>
+                <p style="margin-bottom: 0;"><strong>First week is free</strong>, then membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts.</p>
+                <p>Pay as you go and cancel anytime, no charge if you cancel in the first week.</p>
             </div>
             <form id="subscription-form">
                 <div class="customer-details">
