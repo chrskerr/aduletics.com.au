@@ -1,6 +1,6 @@
 
 const url = "https://stripe-server-xdzmzxo7uq-lz.a.run.app/";
-const stripe = Stripe( 'pk_test_Fl19stXoPXnQwM41LT9VQ3Gi00SQ1ugcZp' );
+const stripe = Stripe( 'pk_live_mwNb1i31QrYYF4ghnbGz0CuQ00WF3EYB1n' );
 
 const style = {
     base: {
