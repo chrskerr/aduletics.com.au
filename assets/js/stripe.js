@@ -21,8 +21,16 @@ const modalHtml = `
         <div class="content">
             <div>
                 <h4>Adultletics Running Club Subscription</h4>
-                <p>You get...</p>
-                <p><strong>$23 AUD per week, no lock in contracts</strong></p>
+                <p style="margin-bottom: 0.5em;">What’s included:</p>
+                <ul>
+                    <li>x3 structured running sessions per week</li>
+                    <li>x2 online strength training for runners sessions per week</li>
+                    <li>x1 weekly team Q&A, check-in and workshop about a different running-related topic</li>
+                    <li>A daily challenge, that changes weekly (this may be a physical or mental challenge)</li>
+                    <li>Weekly drills to work on running technique and skill development</li>
+                    <li>Connection to a like minded group of people for further support, laughs, motivation & inspiration</li>
+                </ul>
+                <p>Membership is a flat <strong>$23AUD/per week.</strong> There are NO sign-up fees and NO lock-in contracts. Pay as you go and cancel anytime.</p>
             </div>
             <form id="subscription-form">
                 <div class="customer-details">
@@ -48,7 +56,7 @@ const modalHtml = `
                 </div>
             </form>
         </div>
-        <div class="background" onclick="(() => $( '#checkout' ).remove())()">
+        <div class="background" onclick="closeCheckout()">
             <i class="far fa-times" style="color: white;"></i>
         </div>
     </div>
@@ -59,7 +67,7 @@ const openCheckout = () => {
     if ( isAlreadyOpen ) return;
 
     gtag( "event", "begin-checkout" );
-    $( "body" ).append( modalHtml );
+    $( "body" ).append( modalHtml ).css({ position: "fixed", top: `-${ window.scrollY }px` });
 
     const elements = stripe.elements();
     const cardElement = elements.create('card', { style });
@@ -68,6 +76,13 @@ const openCheckout = () => {
 
     $( "#subscription-form" ).on( "submit", event => _submitForm( event, cardElement ));
 };
+
+const closeCheckout = () => {
+    const scrollY = $( "body" ).css( "top" );
+    $( "#checkout" ).remove();
+    $( "body" ).css({ position: "initial" });
+    window.scrollTo(0, parseInt(scrollY || '0') * -1);
+}
 
 const _handleChange = event => {
     const displayError = document.getElementById( 'card-errors' );
@@ -100,7 +115,8 @@ const _submitForm = async ( event, cardElement ) => {
 
     const { paymentMethod } = data;
     if ( data.error ) {
-        console.error( "Stripe Error:", data.error );
+        $( "#button-loader" ).removeClass( "fa-spin fa-spinner" ).addClass( "fa-check" );
+        $( "#submit-button" ).prop( "disabled", false );
     } else {
         try {
             const { billing_details, id } = paymentMethod;
@@ -114,6 +130,13 @@ const _submitForm = async ( event, cardElement ) => {
             });
 
             const subscription = await response.json();
+
+            if ( subscription.existing_subscriber ) {
+                gtag( "event", "existing_subscriber" );
+                $( "#checkout > .content" ).empty().append( `<p style="margin-bottom: 0; text-align: center;">Looks like you're already a member with us :)</p>` );
+                return
+            }
+
             const { latest_invoice, status } = subscription;
             const { payment_intent } = latest_invoice;
 
@@ -133,8 +156,8 @@ const _submitForm = async ( event, cardElement ) => {
             if ( status === "active" || status === "trialing" ) {
                 gtag( "event", "purchase" );
                 $( "#checkout > .content" ).empty().append(`
-                    <h3>Thank you for signing up, and welcome to the club!</h3>
-                    <p>An email is on its way to you shortly with more information.</p>
+                    <h3 style="letter-spacing: 2px;">Thank you for signing up, and welcome to the club!</h3>
+                    <p style="margin-bottom: 0;">An email is on its way to you shortly with more information.</p>
                 `);
                 return
             }
@@ -142,6 +165,7 @@ const _submitForm = async ( event, cardElement ) => {
             throw "uncaught outcome"
 
         } catch ( error ) {
+            console.error( error )
             gtag( "event", "server_error", { value: error });
             displayError.textContent = `Something went wrong. Please try again!`;
             $( "#button-loader" ).removeClass( "fa-spin fa-spinner" ).addClass( "fa-check" );

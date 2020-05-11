@@ -1,6 +1,9 @@
 
 const _ = require( 'lodash' )
-const stripe = require('stripe')( process.env.STRIPE_KEY );
+const stripe = require( 'stripe' )( process.env.STRIPE_KEY );
+const sgMail = require('@sendgrid/mail');
+
+sgMail.setApiKey( process.env.SENDGRID_KEY );
 
 const express = require( 'express' );
 const cors = require( 'cors' )
@@ -33,11 +36,16 @@ app.post( '/', async ( req, res ) => {
     const payment_method = _.get( body, "payment_method" );
 
     try {
-        if ( !email || !name || !payment_method ) throw "input data missing"
+        if ( !email || !name || !payment_method ) throw "input data missing";
 
+        const existingCustomerResponse = await stripe.customers.list({ email, limit: 100 });
+        const existingCustomerData = _.get( existingCustomerResponse, "data")
+        const existingActiveSubscriptions = _.filter( _.flatMap( existingCustomerData, "subscriptions.data"), ({ status }) => status === "trialing" || status === "active" );
+
+        if ( _.size( existingActiveSubscriptions ) > 0 ) return res.status( 200 ).send({ existing_subscriber: true })
+        
         const customer = await stripe.customers.create({
-            payment_method: payment_method,
-            email, name,
+            payment_method, email, name,
             invoice_settings: { default_payment_method: payment_method },
         });
             
@@ -47,9 +55,13 @@ app.post( '/', async ( req, res ) => {
             trial_from_plan: true,
         });
 
+        const { status } = subscription;
+        if ( status === "active" || status === "trialing" ) sendWelcomeEmail( email, name )
+
         return res.status( 200 ).send( subscription )
 
     } catch ( error ) {
+        console.error( error )
         return res.status( 500 ).send({ error })
     }
 });
@@ -58,3 +70,25 @@ const port = process.env.PORT || 8080;
 app.listen( port, () => {
     console.log('Listening on port', port);
 });
+
+
+const sendWelcomeEmail = async ( email, name ) => {
+    const msg = {
+        // to: email,
+        to: 'chriskerr@me.com',
+        bcc: 'kate@adultletics.com.au',
+        from: {
+            email: 'info@adultletics.com.au',
+            name: "Adultletics Running Club",
+        },
+        dynamic_template_data: { name },
+        template_id: "d-b320f002c5034a3fbf41a3d1a11f7511",
+    };
+
+    try {
+        await sgMail.send( msg )
+    } catch ( error ) {
+        console.error( error );
+        if ( error.response ) console.error( error.response.body )
+    }
+}
