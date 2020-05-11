@@ -1,7 +1,7 @@
 
 const _ = require( 'lodash' )
 const stripe = require( 'stripe' )( process.env.STRIPE_KEY );
-const sgMail = require('@sendgrid/mail');
+const sgMail = require( '@sendgrid/mail' );
 
 sgMail.setApiKey( process.env.SENDGRID_KEY );
 
@@ -11,22 +11,22 @@ const bodyParser = require('body-parser')
 
 const app = express();
 
-const whitelist = [ /localhost/, /adultletics\.com.au/ ];
-const corsOptionsDelegate = ( req, callback ) => {
-	let corsOptions;
-	whitelist.forEach( e => {
-		if ( req.header( "Origin" ).match( e ) !== -1 ) {
-			corsOptions = { origin: true };
-		} else {
-			corsOptions = { origin: false };
-		}
-	});
-	callback( null, corsOptions );
-};
-app.use( cors( corsOptionsDelegate ))
+// const whitelist = [ /localhost/, /www\.adultletics\.com\.au/ ];
+// const corsOptionsDelegate = ( req, callback ) => {
+// 	let corsOptions;
+// 	whitelist.forEach( e => {
+// 		if ( req.header( "Origin" ).match( e ) !== -1 ) {
+// 			corsOptions = { origin: true };
+// 		} else {
+// 			corsOptions = { origin: false };
+// 		}
+// 	});
+// 	callback( null, corsOptions );
+// };
+// app.use( cors( corsOptionsDelegate ))
 
-// app.use( cors({ origin: /adultletics\.com.au/ }))
-app.use(bodyParser.json())
+app.use( cors({ origin: "https://www.adultletics.com.au" }))
+app.use( bodyParser.json())
 
 app.post( '/', async ( req, res ) => {
     const body = _.get( req, "body" )
@@ -74,8 +74,7 @@ app.listen( port, () => {
 
 const sendWelcomeEmail = async ( email, name ) => {
     const msg = {
-        // to: email,
-        to: 'chriskerr@me.com',
+        to: email,
         bcc: 'kate@adultletics.com.au',
         from: {
             email: 'info@adultletics.com.au',
