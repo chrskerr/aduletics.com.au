@@ -67,7 +67,7 @@ const openCheckout = () => {
     const isAlreadyOpen = $( "#checkout" ).length > 0;
     if ( isAlreadyOpen ) return;
 
-    gtag( "event", "begin-checkout" );
+    gtag( "event", "begin-checkout", { event_category: "ecommerce" });
     $( "body" ).append( modalHtml ).css({ position: "fixed", top: `-${ window.scrollY }px` });
 
     const elements = stripe.elements();
@@ -100,7 +100,7 @@ const _submitForm = async ( event, cardElement ) => {
     $( "#button-loader" ).removeClass( "fa-check" ).addClass( "fa-spin fa-spinner" );
     $( "#submit-button" ).prop( "disabled", true );
 
-    gtag( "event", "checkout_progress" );
+    gtag( "event", "checkout_progress", { event_category: "ecommerce" });
 
     const displayError = document.getElementById( 'card-errors' );
     const name = event.target[0].value;
@@ -133,7 +133,7 @@ const _submitForm = async ( event, cardElement ) => {
             const subscription = await response.json();
 
             if ( subscription.existing_subscriber ) {
-                gtag( "event", "existing_subscriber" );
+                gtag( "event", "existing_subscriber", { event_category: "ecommerce" });
                 $( "#checkout > .content" ).empty().append( `<p style="margin-bottom: 0; text-align: center;">Looks like you're already a member with us :)</p>` );
                 return
             }
@@ -155,7 +155,7 @@ const _submitForm = async ( event, cardElement ) => {
             }
 
             if ( status === "active" || status === "trialing" ) {
-                gtag( "event", "purchase" );
+                gtag( "event", "purchase", { event_category: "ecommerce" });
                 $( "#checkout > .content" ).empty().append(`
                     <h3 style="letter-spacing: 2px;">Thank you for signing up, and welcome to the club!</h3>
                     <p style="margin-bottom: 0;">An email is on its way to you shortly with more information.</p>

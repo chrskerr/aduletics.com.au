@@ -56,13 +56,14 @@ app.post( '/', async ( req, res ) => {
         });
 
         const { status } = subscription;
-        if ( status === "active" || status === "trialing" ) sendWelcomeEmail( email, name )
+        if ( status === "active" || status === "trialing" ) sendWelcomeEmail( email, name );
 
-        return res.status( 200 ).send( subscription )
+        return res.status( 200 ).send( subscription );
 
     } catch ( error ) {
-        console.error( error )
-        return res.status( 500 ).send({ error })
+        console.error( error );
+        sendFailEmail();
+        return res.status( 500 ).send({ error });
     }
 });
 
@@ -82,6 +83,26 @@ const sendWelcomeEmail = async ( email, name ) => {
         },
         dynamic_template_data: { name },
         template_id: "d-b320f002c5034a3fbf41a3d1a11f7511",
+    };
+
+    try {
+        await sgMail.send( msg );
+    } catch ( error ) {
+        console.error( error );
+        if ( error.response ) console.error( error.response.body );
+        sendFailEmail();
+    }
+}
+
+const sendFailEmail = async () => {
+    const msg = {
+        to: 'chriskerr@me.com',
+        cc: 'kate@adultletics.com.au',
+        from: {
+            email: 'info@adultletics.com.au',
+            name: "Adultletics Running Club",
+        },
+        subject: "A Stripe API Server error has occured",
     };
 
     try {

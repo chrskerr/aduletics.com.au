@@ -46,7 +46,7 @@
         if ( currentTimeout ) clearTimeout( currentTimeout )
         const value = window.scrollY / ( $(document).height() - window.innerHeight )
         currentTimeout = setTimeout( () => {
-            gtag( "event", "scroll", { value })
+            gtag( "event", "scroll", { value, event_category: "engagement" })
         }, 250 )
     })
 
@@ -54,7 +54,7 @@
     $( document ).on( "visibilitychange", () => {
         clearInterval( heartbeartInterval ) 
         if ( !document.hidden ) heartbeartInterval = setInterval( () => {
-            gtag( "event", "heartbeat" )
+            gtag( "event", "heartbeat", { event_category: "engagement" })
         }, 10000 )
     })
 
@@ -67,7 +67,7 @@ const faqToggle = id => {
     if ( $span.hasClass( "fa-plus-square" ) ) {
         $span.removeClass( "fa-plus-square" ).addClass( "fa-minus-square" );
         $p.show( 500 )
-        gtag( "event", "faq-open", { value: id })
+        gtag( "event", "faq-open", { value: id, event_category: "engagement" })
     } else {
         $span.removeClass( "fa-minus-square" ).addClass( "fa-plus-square" );
         $p.hide( 200 )
