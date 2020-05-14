@@ -17,7 +17,7 @@ const style = {
 };
 
 const modalHtml = `
-    <div class="modal" id="checkout">
+    <div class="modal" id="checkout" style="display: none;">
         <div class="content">
             <div>
                 <h4>Adultletics Running Club Subscription</h4>
@@ -69,6 +69,7 @@ const openCheckout = () => {
 
     gtag( "event", "begin-checkout", { event_category: "ecommerce" });
     $( "body" ).append( modalHtml ).css({ position: "fixed", top: `-${ window.scrollY }px` });
+    $( "#checkout" ).fadeIn( 250 );
 
     const elements = stripe.elements();
     const cardElement = elements.create('card', { style });
